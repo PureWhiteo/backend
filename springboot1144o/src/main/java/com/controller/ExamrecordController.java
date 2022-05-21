@@ -49,9 +49,6 @@ public class ExamrecordController {
     @Autowired
     private ExamrecordService examrecordService;
 
-
-    
-
    	    /**
      * 考试记录接口
      */
@@ -181,54 +178,6 @@ public class ExamrecordController {
         examrecordService.deleteBatchIds(Arrays.asList(ids));
         return R.ok();
     }
-    
-    /**
-     * 提醒接口
-     */
-	@RequestMapping("/remind/{columnName}/{type}")
-	public R remindCount(@PathVariable("columnName") String columnName, HttpServletRequest request, 
-						 @PathVariable("type") String type,@RequestParam Map<String, Object> map) {
-		map.put("column", columnName);
-		map.put("type", type);
-		
-		if(type.equals("2")) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			Calendar c = Calendar.getInstance();
-			Date remindStartDate = null;
-			Date remindEndDate = null;
-			if(map.get("remindstart")!=null) {
-				Integer remindStart = Integer.parseInt(map.get("remindstart").toString());
-				c.setTime(new Date()); 
-				c.add(Calendar.DAY_OF_MONTH,remindStart);
-				remindStartDate = c.getTime();
-				map.put("remindstart", sdf.format(remindStartDate));
-			}
-			if(map.get("remindend")!=null) {
-				Integer remindEnd = Integer.parseInt(map.get("remindend").toString());
-				c.setTime(new Date());
-				c.add(Calendar.DAY_OF_MONTH,remindEnd);
-				remindEndDate = c.getTime();
-				map.put("remindend", sdf.format(remindEndDate));
-			}
-		}
-		
-		Wrapper<ExamrecordEntity> wrapper = new EntityWrapper<ExamrecordEntity>();
-		if(map.get("remindstart")!=null) {
-			wrapper.ge(columnName, map.get("remindstart"));
-		}
-		if(map.get("remindend")!=null) {
-			wrapper.le(columnName, map.get("remindend"));
-		}
-		if(!request.getSession().getAttribute("role").toString().equals("管理员")) {
-    		wrapper.eq("userid", (Long)request.getSession().getAttribute("userId"));
-    	}
-
-
-		int count = examrecordService.selectCount(wrapper);
-		return R.ok().put("count", count);
-	}
-	
-
 
 
     /**
@@ -239,8 +188,6 @@ public class ExamrecordController {
     	examrecordService.delete(new EntityWrapper<ExamrecordEntity>().eq("paperid", paperid).eq("userid", userid));
         return R.ok();
     }
-
-
 
 
 }
