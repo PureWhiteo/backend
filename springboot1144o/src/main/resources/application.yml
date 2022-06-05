@@ -10,9 +10,9 @@ spring:
     datasource:
         driverClassName: com.mysql.cj.jdbc.Driver
 #        url: jdbc:mysql://172.17.0.3:3306/springboot1144o?useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
-        url: jdbc:mysql://110.42.186.88:3306/springboot1144o?useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
+        url: jdbc:mysql://110.42.186.88:3310/springboot1144o?useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
         username: root
-        password: ssr@8888
+        password: v2ray@8888
 
 
     servlet:
@@ -46,4 +46,5 @@ mybatis-plus:
     cache-enabled: false
     call-setters-on-nulls: true
     #springboot 项目mybatis plus 设置 jdbcTypeForNull (oracle数据库需配置JdbcType.NULL, 默认是Other)
-    jdbc-type-for-null: 'null' 
+    jdbc-type-for-null: 'null'
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

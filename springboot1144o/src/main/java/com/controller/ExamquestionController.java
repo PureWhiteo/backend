@@ -34,13 +34,15 @@ import com.utils.R;
 import com.utils.MD5Util;
 import com.utils.MPUtil;
 import com.utils.CommonUtil;
+
 import java.io.IOException;
 
 /**
  * 试题表
  * 后端接口
- * @author 
- * @email 
+ *
+ * @author
+ * @email
  * @date 2022-04-09 17:58:47
  */
 @RestController
@@ -53,52 +55,52 @@ public class ExamquestionController {
      * 后端列表
      */
     @RequestMapping("/page")
-    public R page(@RequestParam Map<String, Object> params,ExamquestionEntity examquestion,
-		HttpServletRequest request){
+    public R page(@RequestParam Map<String, Object> params, ExamquestionEntity examquestion,
+                  HttpServletRequest request) {
         EntityWrapper<ExamquestionEntity> ew = new EntityWrapper<ExamquestionEntity>();
-		PageUtils page = examquestionService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, examquestion), params), params));
+        PageUtils page = examquestionService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, examquestion), params), params));
 
         return R.ok().put("data", page);
     }
-    
+
     /**
      * 前端列表
      */
-	@IgnoreAuth
+    @IgnoreAuth
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params,ExamquestionEntity examquestion, 
-		HttpServletRequest request){
+    public R list(@RequestParam Map<String, Object> params, ExamquestionEntity examquestion,
+                  HttpServletRequest request) {
         EntityWrapper<ExamquestionEntity> ew = new EntityWrapper<ExamquestionEntity>();
-		PageUtils page = examquestionService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, examquestion), params), params));
+        PageUtils page = examquestionService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, examquestion), params), params));
         return R.ok().put("data", page);
     }
 
-	/**
+    /**
      * 列表
      */
     @RequestMapping("/lists")
-    public R list( ExamquestionEntity examquestion){
-       	EntityWrapper<ExamquestionEntity> ew = new EntityWrapper<ExamquestionEntity>();
-      	ew.allEq(MPUtil.allEQMapPre( examquestion, "examquestion")); 
+    public R list(ExamquestionEntity examquestion) {
+        EntityWrapper<ExamquestionEntity> ew = new EntityWrapper<ExamquestionEntity>();
+        ew.allEq(MPUtil.allEQMapPre(examquestion, "examquestion"));
         return R.ok().put("data", examquestionService.selectListView(ew));
     }
 
-	 /**
+    /**
      * 查询
      */
     @RequestMapping("/query")
-    public R query(ExamquestionEntity examquestion){
-        EntityWrapper< ExamquestionEntity> ew = new EntityWrapper< ExamquestionEntity>();
- 		ew.allEq(MPUtil.allEQMapPre( examquestion, "examquestion")); 
-		ExamquestionView examquestionView =  examquestionService.selectView(ew);
-		return R.ok("查询试题表成功").put("data", examquestionView);
+    public R query(ExamquestionEntity examquestion) {
+        EntityWrapper<ExamquestionEntity> ew = new EntityWrapper<ExamquestionEntity>();
+        ew.allEq(MPUtil.allEQMapPre(examquestion, "examquestion"));
+        ExamquestionView examquestionView = examquestionService.selectView(ew);
+        return R.ok("查询试题表成功").put("data", examquestionView);
     }
-	
+
     /**
      * 后端详情
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id){
+    public R info(@PathVariable("id") Long id) {
         ExamquestionEntity examquestion = examquestionService.selectById(id);
         return R.ok().put("data", examquestion);
     }
@@ -106,34 +108,32 @@ public class ExamquestionController {
     /**
      * 前端详情
      */
-	@IgnoreAuth
+    @IgnoreAuth
     @RequestMapping("/detail/{id}")
-    public R detail(@PathVariable("id") Long id){
+    public R detail(@PathVariable("id") Long id) {
         ExamquestionEntity examquestion = examquestionService.selectById(id);
         return R.ok().put("data", examquestion);
     }
-    
-
 
 
     /**
      * 后端保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody ExamquestionEntity examquestion, HttpServletRequest request){
-    	examquestion.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
-    	//ValidatorUtils.validateEntity(examquestion);
+    public R save(@RequestBody ExamquestionEntity examquestion, HttpServletRequest request) {
+        examquestion.setId(new Date().getTime() + new Double(Math.floor(Math.random() * 1000)).longValue());
+        //ValidatorUtils.validateEntity(examquestion);
         examquestionService.insert(examquestion);
         return R.ok();
     }
-    
+
     /**
      * 前端保存
      */
     @RequestMapping("/add")
-    public R add(@RequestBody ExamquestionEntity examquestion, HttpServletRequest request){
-    	examquestion.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
-    	//ValidatorUtils.validateEntity(examquestion);
+    public R add(@RequestBody ExamquestionEntity examquestion, HttpServletRequest request) {
+        examquestion.setId(new Date().getTime() + new Double(Math.floor(Math.random() * 1000)).longValue());
+        //ValidatorUtils.validateEntity(examquestion);
         examquestionService.insert(examquestion);
         return R.ok();
     }
@@ -142,18 +142,18 @@ public class ExamquestionController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody ExamquestionEntity examquestion, HttpServletRequest request){
+    public R update(@RequestBody ExamquestionEntity examquestion, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(examquestion);
         examquestionService.updateById(examquestion);//全部更新
         return R.ok();
     }
-    
+
 
     /**
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
+    public R delete(@RequestBody Long[] ids) {
         examquestionService.deleteBatchIds(Arrays.asList(ids));
         return R.ok();
     }

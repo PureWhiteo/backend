@@ -34,13 +34,15 @@ import com.utils.R;
 import com.utils.MD5Util;
 import com.utils.MPUtil;
 import com.utils.CommonUtil;
+
 import java.io.IOException;
 
 /**
  * 收藏表
  * 后端接口
- * @author 
- * @email 
+ *
+ * @author
+ * @email
  * @date 2022-04-09 17:58:47
  */
 @RestController
@@ -54,57 +56,57 @@ public class StoreupController {
      * 后端列表
      */
     @RequestMapping("/page")
-    public R page(@RequestParam Map<String, Object> params,StoreupEntity storeup,
-		HttpServletRequest request){
-    	if(!request.getSession().getAttribute("role").toString().equals("管理员")) {
-    		storeup.setUserid((Long)request.getSession().getAttribute("userId"));
-    	}
+    public R page(@RequestParam Map<String, Object> params, StoreupEntity storeup,
+                  HttpServletRequest request) {
+        if (!request.getSession().getAttribute("role").toString().equals("管理员")) {
+            storeup.setUserid((Long) request.getSession().getAttribute("userId"));
+        }
         EntityWrapper<StoreupEntity> ew = new EntityWrapper<StoreupEntity>();
-		PageUtils page = storeupService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, storeup), params), params));
+        PageUtils page = storeupService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, storeup), params), params));
 
         return R.ok().put("data", page);
     }
-    
+
     /**
      * 前端列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params,StoreupEntity storeup, 
-		HttpServletRequest request){
-    	if(!request.getSession().getAttribute("role").toString().equals("管理员")) {
-    		storeup.setUserid((Long)request.getSession().getAttribute("userId"));
-    	}
+    public R list(@RequestParam Map<String, Object> params, StoreupEntity storeup,
+                  HttpServletRequest request) {
+        if (!request.getSession().getAttribute("role").toString().equals("管理员")) {
+            storeup.setUserid((Long) request.getSession().getAttribute("userId"));
+        }
         EntityWrapper<StoreupEntity> ew = new EntityWrapper<StoreupEntity>();
-		PageUtils page = storeupService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, storeup), params), params));
+        PageUtils page = storeupService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, storeup), params), params));
         return R.ok().put("data", page);
     }
 
-	/**
+    /**
      * 列表
      */
     @RequestMapping("/lists")
-    public R list( StoreupEntity storeup){
-       	EntityWrapper<StoreupEntity> ew = new EntityWrapper<StoreupEntity>();
-      	ew.allEq(MPUtil.allEQMapPre( storeup, "storeup")); 
+    public R list(StoreupEntity storeup) {
+        EntityWrapper<StoreupEntity> ew = new EntityWrapper<StoreupEntity>();
+        ew.allEq(MPUtil.allEQMapPre(storeup, "storeup"));
         return R.ok().put("data", storeupService.selectListView(ew));
     }
 
-	 /**
+    /**
      * 查询
      */
     @RequestMapping("/query")
-    public R query(StoreupEntity storeup){
-        EntityWrapper< StoreupEntity> ew = new EntityWrapper< StoreupEntity>();
- 		ew.allEq(MPUtil.allEQMapPre( storeup, "storeup")); 
-		StoreupView storeupView =  storeupService.selectView(ew);
-		return R.ok("查询收藏表成功").put("data", storeupView);
+    public R query(StoreupEntity storeup) {
+        EntityWrapper<StoreupEntity> ew = new EntityWrapper<StoreupEntity>();
+        ew.allEq(MPUtil.allEQMapPre(storeup, "storeup"));
+        StoreupView storeupView = storeupService.selectView(ew);
+        return R.ok("查询收藏表成功").put("data", storeupView);
     }
-	
+
     /**
      * 后端详情
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id){
+    public R info(@PathVariable("id") Long id) {
         StoreupEntity storeup = storeupService.selectById(id);
         return R.ok().put("data", storeup);
     }
@@ -112,36 +114,34 @@ public class StoreupController {
     /**
      * 前端详情
      */
-	@IgnoreAuth
+    @IgnoreAuth
     @RequestMapping("/detail/{id}")
-    public R detail(@PathVariable("id") Long id){
+    public R detail(@PathVariable("id") Long id) {
         StoreupEntity storeup = storeupService.selectById(id);
         return R.ok().put("data", storeup);
     }
-    
-
 
 
     /**
      * 后端保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody StoreupEntity storeup, HttpServletRequest request){
-    	storeup.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
-    	//ValidatorUtils.validateEntity(storeup);
-    	storeup.setUserid((Long)request.getSession().getAttribute("userId"));
+    public R save(@RequestBody StoreupEntity storeup, HttpServletRequest request) {
+        storeup.setId(new Date().getTime() + new Double(Math.floor(Math.random() * 1000)).longValue());
+        //ValidatorUtils.validateEntity(storeup);
+        storeup.setUserid((Long) request.getSession().getAttribute("userId"));
         storeupService.insert(storeup);
         return R.ok();
     }
-    
+
     /**
      * 前端保存
      */
     @RequestMapping("/add")
-    public R add(@RequestBody StoreupEntity storeup, HttpServletRequest request){
-    	storeup.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
-    	//ValidatorUtils.validateEntity(storeup);
-    	storeup.setUserid((Long)request.getSession().getAttribute("userId"));
+    public R add(@RequestBody StoreupEntity storeup, HttpServletRequest request) {
+        storeup.setId(new Date().getTime() + new Double(Math.floor(Math.random() * 1000)).longValue());
+        //ValidatorUtils.validateEntity(storeup);
+        storeup.setUserid((Long) request.getSession().getAttribute("userId"));
         storeupService.insert(storeup);
         return R.ok();
     }
@@ -150,18 +150,18 @@ public class StoreupController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody StoreupEntity storeup, HttpServletRequest request){
+    public R update(@RequestBody StoreupEntity storeup, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(storeup);
         storeupService.updateById(storeup);//全部更新
         return R.ok();
     }
-    
+
 
     /**
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
+    public R delete(@RequestBody Long[] ids) {
         storeupService.deleteBatchIds(Arrays.asList(ids));
         return R.ok();
     }

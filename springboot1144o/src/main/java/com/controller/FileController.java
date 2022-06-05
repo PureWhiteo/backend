@@ -38,76 +38,77 @@ import com.utils.R;
  */
 @RestController
 @RequestMapping("/file")
-@SuppressWarnings({"unchecked","rawtypes"})
-public class FileController{
-	@Autowired
+@SuppressWarnings({"unchecked", "rawtypes"})
+public class FileController {
+    @Autowired
     private ConfigService configService;
-	/**
-	 * 上传文件
-	 */
-	@IgnoreAuth
-	@RequestMapping("/upload")
-	public R upload(@RequestParam("file") MultipartFile file,String type) throws Exception {
-		if (file.isEmpty()) {
-			throw new EIException("上传文件不能为空");
-		}
-		System.out.println(2);
-		String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")+1);
-		File path = new File(ResourceUtils.getURL("classpath:static").getPath());
-		if(!path.exists()) {
-		    path = new File("");
-		}
-		File upload = new File(path.getAbsolutePath(),"/upload/");
-		if(!upload.exists()) {
-		    upload.mkdirs();
-		}
-		String fileName = new Date().getTime()+"."+fileExt;
-		File dest = new File(upload.getAbsolutePath()+"/"+fileName);
-		file.transferTo(dest);
-		FileUtils.copyFile(dest, new File("C:\\Users\\86150\\Desktop\\backend\\springboot1144o\\src\\main\\resources\\static\\upload"+"/"+fileName)); /**修改了路径以后请将该行最前面的//注释去掉**/
-		if(StringUtils.isNotBlank(type) && type.equals("1")) {
-			ConfigEntity configEntity = configService.selectOne(new EntityWrapper<ConfigEntity>().eq("name", "faceFile"));
-			if(configEntity==null) {
-				configEntity = new ConfigEntity();
-				configEntity.setName("faceFile");
-				configEntity.setValue(fileName);
-			} else {
-				configEntity.setValue(fileName);
-			}
-			configService.insertOrUpdate(configEntity);
-		}
-		return R.ok().put("file", fileName);
-	}
-	
-	/**
-	 * 下载文件
-	 */
-	@IgnoreAuth
-	@RequestMapping("/download")
-	public ResponseEntity<byte[]> download(@RequestParam String fileName) {
-		try {
-			File path = new File(ResourceUtils.getURL("classpath:static").getPath());
-			if(!path.exists()) {
-			    path = new File("");
-			}
-			File upload = new File(path.getAbsolutePath(),"/upload/");
-			if(!upload.exists()) {
-			    upload.mkdirs();
-			}
-			File file = new File(upload.getAbsolutePath()+"/"+fileName);
-			if(file.exists()){
+
+    /**
+     * 上传文件
+     */
+    @IgnoreAuth
+    @RequestMapping("/upload")
+    public R upload(@RequestParam("file") MultipartFile file, String type) throws Exception {
+        if (file.isEmpty()) {
+            throw new EIException("上传文件不能为空");
+        }
+        System.out.println(2);
+        String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
+        File path = new File(ResourceUtils.getURL("classpath:static").getPath());
+        if (!path.exists()) {
+            path = new File("");
+        }
+        File upload = new File(path.getAbsolutePath(), "/upload/");
+        if (!upload.exists()) {
+            upload.mkdirs();
+        }
+        String fileName = new Date().getTime() + "." + fileExt;
+        File dest = new File(upload.getAbsolutePath() + "/" + fileName);
+        file.transferTo(dest);
+        FileUtils.copyFile(dest, new File("C:\\Users\\86150\\Desktop\\backend\\springboot1144o\\src\\main\\resources\\static\\upload" + "/" + fileName)); /**修改了路径以后请将该行最前面的//注释去掉**/
+        if (StringUtils.isNotBlank(type) && type.equals("1")) {
+            ConfigEntity configEntity = configService.selectOne(new EntityWrapper<ConfigEntity>().eq("name", "faceFile"));
+            if (configEntity == null) {
+                configEntity = new ConfigEntity();
+                configEntity.setName("faceFile");
+                configEntity.setValue(fileName);
+            } else {
+                configEntity.setValue(fileName);
+            }
+            configService.insertOrUpdate(configEntity);
+        }
+        return R.ok().put("file", fileName);
+    }
+
+    /**
+     * 下载文件
+     */
+    @IgnoreAuth
+    @RequestMapping("/download")
+    public ResponseEntity<byte[]> download(@RequestParam String fileName) {
+        try {
+            File path = new File(ResourceUtils.getURL("classpath:static").getPath());
+            if (!path.exists()) {
+                path = new File("");
+            }
+            File upload = new File(path.getAbsolutePath(), "/upload/");
+            if (!upload.exists()) {
+                upload.mkdirs();
+            }
+            File file = new File(upload.getAbsolutePath() + "/" + fileName);
+            if (file.exists()) {
 				/*if(!fileService.canRead(file, SessionManager.getSessionUser())){
 					getResponse().sendError(403);
 				}*/
-				HttpHeaders headers = new HttpHeaders();
-			    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);    
-			    headers.setContentDispositionFormData("attachment", fileName);    
-			    return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),headers, HttpStatus.CREATED);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                headers.setContentDispositionFormData("attachment", fileName);
+                return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

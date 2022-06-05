@@ -34,13 +34,15 @@ import com.utils.R;
 import com.utils.MD5Util;
 import com.utils.MPUtil;
 import com.utils.CommonUtil;
+
 import java.io.IOException;
 
 /**
  * 考试记录表
  * 后端接口
- * @author 
- * @email 
+ *
+ * @author
+ * @email
  * @date 2022-04-09 17:58:47
  */
 @RestController
@@ -49,17 +51,17 @@ public class ExamrecordController {
     @Autowired
     private ExamrecordService examrecordService;
 
-   	    /**
+    /**
      * 考试记录接口
      */
     @RequestMapping("/groupby")
-    public R page2(@RequestParam Map<String, Object> params,ExamrecordEntity examrecord, HttpServletRequest request){
-    	if(!request.getSession().getAttribute("role").toString().equals("管理员")) {
-    		examrecord.setUserid((Long)request.getSession().getAttribute("userId"));
-    	}
+    public R page2(@RequestParam Map<String, Object> params, ExamrecordEntity examrecord, HttpServletRequest request) {
+        if (!request.getSession().getAttribute("role").toString().equals("管理员")) {
+            examrecord.setUserid((Long) request.getSession().getAttribute("userId"));
+        }
 
         EntityWrapper<ExamrecordEntity> ew = new EntityWrapper<ExamrecordEntity>();
-		PageUtils page = examrecordService.queryPageGroupBy(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, examrecord), params), params));
+        PageUtils page = examrecordService.queryPageGroupBy(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, examrecord), params), params));
         return R.ok().put("data", page);
     }
 
@@ -67,57 +69,57 @@ public class ExamrecordController {
      * 后端列表
      */
     @RequestMapping("/page")
-    public R page(@RequestParam Map<String, Object> params,ExamrecordEntity examrecord,
-		HttpServletRequest request){
-    	if(!request.getSession().getAttribute("role").toString().equals("管理员")) {
-    		examrecord.setUserid((Long)request.getSession().getAttribute("userId"));
-    	}
+    public R page(@RequestParam Map<String, Object> params, ExamrecordEntity examrecord,
+                  HttpServletRequest request) {
+        if (!request.getSession().getAttribute("role").toString().equals("管理员")) {
+            examrecord.setUserid((Long) request.getSession().getAttribute("userId"));
+        }
         EntityWrapper<ExamrecordEntity> ew = new EntityWrapper<ExamrecordEntity>();
-		PageUtils page = examrecordService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, examrecord), params), params));
+        PageUtils page = examrecordService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, examrecord), params), params));
 
         return R.ok().put("data", page);
     }
-    
+
     /**
      * 前端列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params,ExamrecordEntity examrecord, 
-		HttpServletRequest request){
-    	if(!request.getSession().getAttribute("role").toString().equals("管理员")) {
-    		examrecord.setUserid((Long)request.getSession().getAttribute("userId"));
-    	}
+    public R list(@RequestParam Map<String, Object> params, ExamrecordEntity examrecord,
+                  HttpServletRequest request) {
+        if (!request.getSession().getAttribute("role").toString().equals("管理员")) {
+            examrecord.setUserid((Long) request.getSession().getAttribute("userId"));
+        }
         EntityWrapper<ExamrecordEntity> ew = new EntityWrapper<ExamrecordEntity>();
-		PageUtils page = examrecordService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, examrecord), params), params));
+        PageUtils page = examrecordService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, examrecord), params), params));
         return R.ok().put("data", page);
     }
 
-	/**
+    /**
      * 列表
      */
     @RequestMapping("/lists")
-    public R list( ExamrecordEntity examrecord){
-       	EntityWrapper<ExamrecordEntity> ew = new EntityWrapper<ExamrecordEntity>();
-      	ew.allEq(MPUtil.allEQMapPre( examrecord, "examrecord")); 
+    public R list(ExamrecordEntity examrecord) {
+        EntityWrapper<ExamrecordEntity> ew = new EntityWrapper<ExamrecordEntity>();
+        ew.allEq(MPUtil.allEQMapPre(examrecord, "examrecord"));
         return R.ok().put("data", examrecordService.selectListView(ew));
     }
 
-	 /**
+    /**
      * 查询
      */
     @RequestMapping("/query")
-    public R query(ExamrecordEntity examrecord){
-        EntityWrapper< ExamrecordEntity> ew = new EntityWrapper< ExamrecordEntity>();
- 		ew.allEq(MPUtil.allEQMapPre( examrecord, "examrecord")); 
-		ExamrecordView examrecordView =  examrecordService.selectView(ew);
-		return R.ok("查询考试记录表成功").put("data", examrecordView);
+    public R query(ExamrecordEntity examrecord) {
+        EntityWrapper<ExamrecordEntity> ew = new EntityWrapper<ExamrecordEntity>();
+        ew.allEq(MPUtil.allEQMapPre(examrecord, "examrecord"));
+        ExamrecordView examrecordView = examrecordService.selectView(ew);
+        return R.ok("查询考试记录表成功").put("data", examrecordView);
     }
-	
+
     /**
      * 后端详情
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id){
+    public R info(@PathVariable("id") Long id) {
         ExamrecordEntity examrecord = examrecordService.selectById(id);
         return R.ok().put("data", examrecord);
     }
@@ -125,36 +127,34 @@ public class ExamrecordController {
     /**
      * 前端详情
      */
-	@IgnoreAuth
+    @IgnoreAuth
     @RequestMapping("/detail/{id}")
-    public R detail(@PathVariable("id") Long id){
+    public R detail(@PathVariable("id") Long id) {
         ExamrecordEntity examrecord = examrecordService.selectById(id);
         return R.ok().put("data", examrecord);
     }
-    
-
 
 
     /**
      * 后端保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody ExamrecordEntity examrecord, HttpServletRequest request){
-    	examrecord.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
-    	//ValidatorUtils.validateEntity(examrecord);
-    	examrecord.setUserid((Long)request.getSession().getAttribute("userId"));
+    public R save(@RequestBody ExamrecordEntity examrecord, HttpServletRequest request) {
+        examrecord.setId(new Date().getTime() + new Double(Math.floor(Math.random() * 1000)).longValue());
+        //ValidatorUtils.validateEntity(examrecord);
+        examrecord.setUserid((Long) request.getSession().getAttribute("userId"));
         examrecordService.insert(examrecord);
         return R.ok();
     }
-    
+
     /**
      * 前端保存
      */
     @RequestMapping("/add")
-    public R add(@RequestBody ExamrecordEntity examrecord, HttpServletRequest request){
-    	examrecord.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
-    	//ValidatorUtils.validateEntity(examrecord);
-    	examrecord.setUserid((Long)request.getSession().getAttribute("userId"));
+    public R add(@RequestBody ExamrecordEntity examrecord, HttpServletRequest request) {
+        examrecord.setId(new Date().getTime() + new Double(Math.floor(Math.random() * 1000)).longValue());
+        //ValidatorUtils.validateEntity(examrecord);
+        examrecord.setUserid((Long) request.getSession().getAttribute("userId"));
         examrecordService.insert(examrecord);
         return R.ok();
     }
@@ -163,18 +163,18 @@ public class ExamrecordController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody ExamrecordEntity examrecord, HttpServletRequest request){
+    public R update(@RequestBody ExamrecordEntity examrecord, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(examrecord);
         examrecordService.updateById(examrecord);//全部更新
         return R.ok();
     }
-    
+
 
     /**
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
+    public R delete(@RequestBody Long[] ids) {
         examrecordService.deleteBatchIds(Arrays.asList(ids));
         return R.ok();
     }
@@ -184,8 +184,8 @@ public class ExamrecordController {
      * 当重新考试时，删除考生的某个试卷的所有考试记录
      */
     @RequestMapping("/deleteRecords")
-    public R deleteRecords(@RequestParam Long userid,@RequestParam Long paperid){
-    	examrecordService.delete(new EntityWrapper<ExamrecordEntity>().eq("paperid", paperid).eq("userid", userid));
+    public R deleteRecords(@RequestParam Long userid, @RequestParam Long paperid) {
+        examrecordService.delete(new EntityWrapper<ExamrecordEntity>().eq("paperid", paperid).eq("userid", userid));
         return R.ok();
     }
 

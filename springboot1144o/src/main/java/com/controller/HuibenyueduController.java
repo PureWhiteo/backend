@@ -34,15 +34,18 @@ import com.utils.R;
 import com.utils.MD5Util;
 import com.utils.MPUtil;
 import com.utils.CommonUtil;
+
 import java.io.IOException;
+
 import com.service.StoreupService;
 import com.entity.StoreupEntity;
 
 /**
  * 绘本阅读
  * 后端接口
- * @author 
- * @email 
+ *
+ * @author
+ * @email
  * @date 2022-04-09 17:58:47
  */
 @RestController
@@ -59,52 +62,52 @@ public class HuibenyueduController {
      * 后端列表
      */
     @RequestMapping("/page")
-    public R page(@RequestParam Map<String, Object> params,HuibenyueduEntity huibenyuedu,
-		HttpServletRequest request){
+    public R page(@RequestParam Map<String, Object> params, HuibenyueduEntity huibenyuedu,
+                  HttpServletRequest request) {
         EntityWrapper<HuibenyueduEntity> ew = new EntityWrapper<HuibenyueduEntity>();
-		PageUtils page = huibenyueduService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, huibenyuedu), params), params));
+        PageUtils page = huibenyueduService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, huibenyuedu), params), params));
 
         return R.ok().put("data", page);
     }
-    
+
     /**
      * 前端列表
      */
-	@IgnoreAuth
+    @IgnoreAuth
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params,HuibenyueduEntity huibenyuedu, 
-		HttpServletRequest request){
+    public R list(@RequestParam Map<String, Object> params, HuibenyueduEntity huibenyuedu,
+                  HttpServletRequest request) {
         EntityWrapper<HuibenyueduEntity> ew = new EntityWrapper<HuibenyueduEntity>();
-		PageUtils page = huibenyueduService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, huibenyuedu), params), params));
+        PageUtils page = huibenyueduService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, huibenyuedu), params), params));
         return R.ok().put("data", page);
     }
 
-	/**
+    /**
      * 列表
      */
     @RequestMapping("/lists")
-    public R list( HuibenyueduEntity huibenyuedu){
-       	EntityWrapper<HuibenyueduEntity> ew = new EntityWrapper<HuibenyueduEntity>();
-      	ew.allEq(MPUtil.allEQMapPre( huibenyuedu, "huibenyuedu")); 
+    public R list(HuibenyueduEntity huibenyuedu) {
+        EntityWrapper<HuibenyueduEntity> ew = new EntityWrapper<HuibenyueduEntity>();
+        ew.allEq(MPUtil.allEQMapPre(huibenyuedu, "huibenyuedu"));
         return R.ok().put("data", huibenyueduService.selectListView(ew));
     }
 
-	 /**
+    /**
      * 查询
      */
     @RequestMapping("/query")
-    public R query(HuibenyueduEntity huibenyuedu){
-        EntityWrapper< HuibenyueduEntity> ew = new EntityWrapper< HuibenyueduEntity>();
- 		ew.allEq(MPUtil.allEQMapPre( huibenyuedu, "huibenyuedu")); 
-		HuibenyueduView huibenyueduView =  huibenyueduService.selectView(ew);
-		return R.ok("查询绘本阅读成功").put("data", huibenyueduView);
+    public R query(HuibenyueduEntity huibenyuedu) {
+        EntityWrapper<HuibenyueduEntity> ew = new EntityWrapper<HuibenyueduEntity>();
+        ew.allEq(MPUtil.allEQMapPre(huibenyuedu, "huibenyuedu"));
+        HuibenyueduView huibenyueduView = huibenyueduService.selectView(ew);
+        return R.ok("查询绘本阅读成功").put("data", huibenyueduView);
     }
-	
+
     /**
      * 后端详情
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id){
+    public R info(@PathVariable("id") Long id) {
         HuibenyueduEntity huibenyuedu = huibenyueduService.selectById(id);
         return R.ok().put("data", huibenyuedu);
     }
@@ -112,25 +115,24 @@ public class HuibenyueduController {
     /**
      * 前端详情
      */
-	@IgnoreAuth
+    @IgnoreAuth
     @RequestMapping("/detail/{id}")
-    public R detail(@PathVariable("id") Long id){
+    public R detail(@PathVariable("id") Long id) {
         HuibenyueduEntity huibenyuedu = huibenyueduService.selectById(id);
         return R.ok().put("data", huibenyuedu);
     }
-    
 
 
     /**
      * 赞或踩
      */
     @RequestMapping("/thumbsup/{id}")
-    public R vote(@PathVariable("id") String id,String type){
+    public R vote(@PathVariable("id") String id, String type) {
         HuibenyueduEntity huibenyuedu = huibenyueduService.selectById(id);
-        if(type.equals("1")) {
-        	huibenyuedu.setThumbsupnum(huibenyuedu.getThumbsupnum()+1);
+        if (type.equals("1")) {
+            huibenyuedu.setThumbsupnum(huibenyuedu.getThumbsupnum() + 1);
         } else {
-        	huibenyuedu.setCrazilynum(huibenyuedu.getCrazilynum()+1);
+            huibenyuedu.setCrazilynum(huibenyuedu.getCrazilynum() + 1);
         }
         huibenyueduService.updateById(huibenyuedu);
         return R.ok("投票成功");
@@ -140,20 +142,20 @@ public class HuibenyueduController {
      * 后端保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody HuibenyueduEntity huibenyuedu, HttpServletRequest request){
-    	huibenyuedu.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
-    	//ValidatorUtils.validateEntity(huibenyuedu);
+    public R save(@RequestBody HuibenyueduEntity huibenyuedu, HttpServletRequest request) {
+        huibenyuedu.setId(new Date().getTime() + new Double(Math.floor(Math.random() * 1000)).longValue());
+        //ValidatorUtils.validateEntity(huibenyuedu);
         huibenyueduService.insert(huibenyuedu);
         return R.ok();
     }
-    
+
     /**
      * 前端保存
      */
     @RequestMapping("/add")
-    public R add(@RequestBody HuibenyueduEntity huibenyuedu, HttpServletRequest request){
-    	huibenyuedu.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
-    	//ValidatorUtils.validateEntity(huibenyuedu);
+    public R add(@RequestBody HuibenyueduEntity huibenyuedu, HttpServletRequest request) {
+        huibenyuedu.setId(new Date().getTime() + new Double(Math.floor(Math.random() * 1000)).longValue());
+        //ValidatorUtils.validateEntity(huibenyuedu);
         huibenyueduService.insert(huibenyuedu);
         return R.ok();
     }
@@ -162,7 +164,7 @@ public class HuibenyueduController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody HuibenyueduEntity huibenyuedu, HttpServletRequest request){
+    public R update(@RequestBody HuibenyueduEntity huibenyuedu, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(huibenyuedu);
         huibenyueduService.updateById(huibenyuedu);//全部更新
         return R.ok();
@@ -173,7 +175,7 @@ public class HuibenyueduController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
+    public R delete(@RequestBody Long[] ids) {
         huibenyueduService.deleteBatchIds(Arrays.asList(ids));
         return R.ok();
     }

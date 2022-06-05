@@ -34,13 +34,15 @@ import com.utils.R;
 import com.utils.MD5Util;
 import com.utils.MPUtil;
 import com.utils.CommonUtil;
+
 import java.io.IOException;
 
 /**
  * 单词填写表
  * 后端接口
- * @author 
- * @email 
+ *
+ * @author
+ * @email
  * @date 2022-04-09 17:58:47
  */
 @RestController
@@ -54,52 +56,52 @@ public class ExampaperController {
      * 后端列表
      */
     @RequestMapping("/page")
-    public R page(@RequestParam Map<String, Object> params,ExampaperEntity exampaper,
-		HttpServletRequest request){
+    public R page(@RequestParam Map<String, Object> params, ExampaperEntity exampaper,
+                  HttpServletRequest request) {
         EntityWrapper<ExampaperEntity> ew = new EntityWrapper<ExampaperEntity>();
-		PageUtils page = exampaperService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, exampaper), params), params));
+        PageUtils page = exampaperService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, exampaper), params), params));
 
         return R.ok().put("data", page);
     }
-    
+
     /**
      * 前端列表
      */
-	@IgnoreAuth
+    @IgnoreAuth
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params,ExampaperEntity exampaper, 
-		HttpServletRequest request){
+    public R list(@RequestParam Map<String, Object> params, ExampaperEntity exampaper,
+                  HttpServletRequest request) {
         EntityWrapper<ExampaperEntity> ew = new EntityWrapper<ExampaperEntity>();
-		PageUtils page = exampaperService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, exampaper), params), params));
+        PageUtils page = exampaperService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, exampaper), params), params));
         return R.ok().put("data", page);
     }
 
-	/**
+    /**
      * 列表
      */
     @RequestMapping("/lists")
-    public R list( ExampaperEntity exampaper){
-       	EntityWrapper<ExampaperEntity> ew = new EntityWrapper<ExampaperEntity>();
-      	ew.allEq(MPUtil.allEQMapPre( exampaper, "exampaper")); 
+    public R list(ExampaperEntity exampaper) {
+        EntityWrapper<ExampaperEntity> ew = new EntityWrapper<ExampaperEntity>();
+        ew.allEq(MPUtil.allEQMapPre(exampaper, "exampaper"));
         return R.ok().put("data", exampaperService.selectListView(ew));
     }
 
-	 /**
+    /**
      * 查询
      */
     @RequestMapping("/query")
-    public R query(ExampaperEntity exampaper){
-        EntityWrapper< ExampaperEntity> ew = new EntityWrapper< ExampaperEntity>();
- 		ew.allEq(MPUtil.allEQMapPre( exampaper, "exampaper")); 
-		ExampaperView exampaperView =  exampaperService.selectView(ew);
-		return R.ok("查询单词填写表成功").put("data", exampaperView);
+    public R query(ExampaperEntity exampaper) {
+        EntityWrapper<ExampaperEntity> ew = new EntityWrapper<ExampaperEntity>();
+        ew.allEq(MPUtil.allEQMapPre(exampaper, "exampaper"));
+        ExampaperView exampaperView = exampaperService.selectView(ew);
+        return R.ok("查询单词填写表成功").put("data", exampaperView);
     }
-	
+
     /**
      * 后端详情
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id){
+    public R info(@PathVariable("id") Long id) {
         ExampaperEntity exampaper = exampaperService.selectById(id);
         return R.ok().put("data", exampaper);
     }
@@ -107,9 +109,9 @@ public class ExampaperController {
     /**
      * 前端详情
      */
-	@IgnoreAuth
+    @IgnoreAuth
     @RequestMapping("/detail/{id}")
-    public R detail(@PathVariable("id") Long id){
+    public R detail(@PathVariable("id") Long id) {
         ExampaperEntity exampaper = exampaperService.selectById(id);
         return R.ok().put("data", exampaper);
     }
@@ -118,20 +120,20 @@ public class ExampaperController {
      * 后端保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody ExampaperEntity exampaper, HttpServletRequest request){
-    	exampaper.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
-    	//ValidatorUtils.validateEntity(exampaper);
+    public R save(@RequestBody ExampaperEntity exampaper, HttpServletRequest request) {
+        exampaper.setId(new Date().getTime() + new Double(Math.floor(Math.random() * 1000)).longValue());
+        //ValidatorUtils.validateEntity(exampaper);
         exampaperService.insert(exampaper);
         return R.ok();
     }
-    
+
     /**
      * 前端保存
      */
     @RequestMapping("/add")
-    public R add(@RequestBody ExampaperEntity exampaper, HttpServletRequest request){
-    	exampaper.setId(new Date().getTime()+new Double(Math.floor(Math.random()*1000)).longValue());
-    	//ValidatorUtils.validateEntity(exampaper);
+    public R add(@RequestBody ExampaperEntity exampaper, HttpServletRequest request) {
+        exampaper.setId(new Date().getTime() + new Double(Math.floor(Math.random() * 1000)).longValue());
+        //ValidatorUtils.validateEntity(exampaper);
         exampaperService.insert(exampaper);
         return R.ok();
     }
@@ -140,7 +142,7 @@ public class ExampaperController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody ExampaperEntity exampaper, HttpServletRequest request){
+    public R update(@RequestBody ExampaperEntity exampaper, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(exampaper);
         exampaperService.updateById(exampaper);//全部更新
         return R.ok();
@@ -150,7 +152,7 @@ public class ExampaperController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
+    public R delete(@RequestBody Long[] ids) {
         exampaperService.deleteBatchIds(Arrays.asList(ids));
         return R.ok();
     }
