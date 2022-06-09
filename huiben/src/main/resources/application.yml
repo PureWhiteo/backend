@@ -4,13 +4,13 @@ server:
         uri-encoding: UTF-8
     port: 8080
     servlet:
-        context-path: /springboot1144o
+        context-path: /huiben
 
 spring:
     datasource:
         driverClassName: com.mysql.cj.jdbc.Driver
-#        url: jdbc:mysql://172.17.0.3:3306/springboot1144o?useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
-        url: jdbc:mysql://110.42.186.88:3310/springboot1144o?useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
+#        url: jdbc:mysql://172.17.0.3:3306/huiben?useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
+        url: jdbc:mysql://110.42.186.88:3310/huiben?useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
         username: root
         password: v2ray@8888
 

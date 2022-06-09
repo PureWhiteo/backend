@@ -65,7 +65,7 @@ public class FileController {
         String fileName = new Date().getTime() + "." + fileExt;
         File dest = new File(upload.getAbsolutePath() + "/" + fileName);
         file.transferTo(dest);
-        FileUtils.copyFile(dest, new File("C:\\Users\\86150\\Desktop\\backend\\springboot1144o\\src\\main\\resources\\static\\upload" + "/" + fileName)); /**修改了路径以后请将该行最前面的//注释去掉**/
+        FileUtils.copyFile(dest, new File("C:\\Users\\86150\\Desktop\\backend\\huiben\\src\\main\\resources\\static\\upload" + "/" + fileName)); /**修改了路径以后请将该行最前面的//注释去掉**/
         if (StringUtils.isNotBlank(type) && type.equals("1")) {
             ConfigEntity configEntity = configService.selectOne(new EntityWrapper<ConfigEntity>().eq("name", "faceFile"));
             if (configEntity == null) {

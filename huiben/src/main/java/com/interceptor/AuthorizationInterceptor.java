@@ -49,17 +49,14 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         } else {
             return true;
         }
-
         //从header中获取token
         String token = request.getHeader(LOGIN_TOKEN_KEY);
-        
         /**
          * 不需要验证权限的方法直接放过
          */
         if(annotation!=null) {
         	return true;
         }
-        
         TokenEntity tokenEntity = null;
         if(StringUtils.isNotBlank(token)) {
         	tokenEntity = tokenService.getTokenEntity(token);

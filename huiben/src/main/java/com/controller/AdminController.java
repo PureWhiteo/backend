@@ -37,7 +37,7 @@ import com.utils.ValidatorUtils;
  */
 @RequestMapping("users")
 @RestController
-public class UserController {
+public class AdminController {
 
     @Autowired
     private UserService userService;

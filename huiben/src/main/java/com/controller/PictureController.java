@@ -1,14 +1,8 @@
 package com.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Date;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.utils.ValidatorUtils;
@@ -38,7 +32,6 @@ import com.utils.CommonUtil;
 import java.io.IOException;
 
 import com.service.StoreupService;
-import com.entity.StoreupEntity;
 
 /**
  * 绘本阅读
@@ -50,7 +43,7 @@ import com.entity.StoreupEntity;
  */
 @RestController
 @RequestMapping("/huibenyuedu")
-public class HuibenyueduController {
+public class PictureController {
     @Autowired
     private HuibenyueduService huibenyueduService;
 
@@ -103,14 +96,6 @@ public class HuibenyueduController {
         return R.ok("查询绘本阅读成功").put("data", huibenyueduView);
     }
 
-    /**
-     * 后端详情
-     */
-    @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id) {
-        HuibenyueduEntity huibenyuedu = huibenyueduService.selectById(id);
-        return R.ok().put("data", huibenyuedu);
-    }
 
     /**
      * 前端详情
@@ -138,16 +123,6 @@ public class HuibenyueduController {
         return R.ok("投票成功");
     }
 
-    /**
-     * 后端保存
-     */
-    @RequestMapping("/save")
-    public R save(@RequestBody HuibenyueduEntity huibenyuedu, HttpServletRequest request) {
-        huibenyuedu.setId(new Date().getTime() + new Double(Math.floor(Math.random() * 1000)).longValue());
-        //ValidatorUtils.validateEntity(huibenyuedu);
-        huibenyueduService.insert(huibenyuedu);
-        return R.ok();
-    }
 
     /**
      * 前端保存
@@ -161,6 +136,24 @@ public class HuibenyueduController {
     }
 
     /**
+     * 后端详情
+     */
+    @RequestMapping("/info/{id}")
+    public R info(@PathVariable("id") Long id) {
+        HuibenyueduEntity huibenyuedu = huibenyueduService.selectById(id);
+        return R.ok().put("data", huibenyuedu);
+    }
+    /**
+     * 后端保存
+     */
+    @RequestMapping("/save")
+    public R save(@RequestBody HuibenyueduEntity huibenyuedu, HttpServletRequest request) {
+        huibenyuedu.setId(new Date().getTime() + new Double(Math.floor(Math.random() * 1000)).longValue());
+        //ValidatorUtils.validateEntity(huibenyuedu);
+        huibenyueduService.insert(huibenyuedu);
+        return R.ok();
+    }
+    /**
      * 修改
      */
     @RequestMapping("/update")
@@ -169,8 +162,6 @@ public class HuibenyueduController {
         huibenyueduService.updateById(huibenyuedu);//全部更新
         return R.ok();
     }
-
-
     /**
      * 删除
      */

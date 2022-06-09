@@ -114,8 +114,6 @@ public class ExamquestionController {
         ExamquestionEntity examquestion = examquestionService.selectById(id);
         return R.ok().put("data", examquestion);
     }
-
-
     /**
      * 后端保存
      */
@@ -126,7 +124,6 @@ public class ExamquestionController {
         examquestionService.insert(examquestion);
         return R.ok();
     }
-
     /**
      * 前端保存
      */
@@ -137,7 +134,6 @@ public class ExamquestionController {
         examquestionService.insert(examquestion);
         return R.ok();
     }
-
     /**
      * 修改
      */
@@ -147,8 +143,6 @@ public class ExamquestionController {
         examquestionService.updateById(examquestion);//全部更新
         return R.ok();
     }
-
-
     /**
      * 删除
      */
@@ -157,6 +151,4 @@ public class ExamquestionController {
         examquestionService.deleteBatchIds(Arrays.asList(ids));
         return R.ok();
     }
-
-
 }

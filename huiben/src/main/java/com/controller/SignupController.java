@@ -41,7 +41,7 @@ import java.io.IOException;
  */
 @RestController
 @RequestMapping("/yuedudaka")
-public class YuedudakaController {
+public class SignupController {
     @Autowired
     private YuedudakaService yuedudakaService;
 

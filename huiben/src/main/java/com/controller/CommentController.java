@@ -47,7 +47,7 @@ import java.io.IOException;
  */
 @RestController
 @RequestMapping("/discusshuibenyuedu")
-public class DiscusshuibenyueduController {
+public class CommentController {
     @Autowired
     private DiscusshuibenyueduService discusshuibenyueduService;
 
